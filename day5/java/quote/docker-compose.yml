@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mysql2:
+    # disabling line below as image info is given in file - Dockerfile.MySql
+    #image: mysql:8.0
+    image: mysql_img:2.0
+    container_name: mysql2
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.MySql
+    command: [ 'mysqld' ]
+    environment:
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: quotedb
+    ports:
+      - "3500:3306"
+
+    volumes:
+      - ~/dev/dockers/java-quote-mysql:/var/lib/mysql
+
+  quote2:
+    image: quote2_img
+    container_name: quote2
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "9200:9700"
+
+    depends_on:
+      - mysql2
+
+    restart: always
+  
+
