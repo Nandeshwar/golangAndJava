@@ -1,0 +1,4 @@
+server:
+  port: 9700
+app:
+  message: Up And Running. getting this value from yaml file
